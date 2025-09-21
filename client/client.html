@@ -27,6 +27,7 @@
     <script>
         const sendButton = document.getElementById('send');
         sendButton.addEventListener('click', () => {
+
             const page = document.getElementById('page');
             const pageValue = page.value;
             const pageText = page.options[page.selectedIndex].text;
@@ -51,8 +52,7 @@
 
                         else if (contentType && contentType.includes('xml')) {
                             const parser = new DOMParser();
-                            const xmlDoc = parser.parseFromString(text, "text/xml");
-                            const message = xmlDoc.getElementsByTagName("message")[0].childNodes[0]
+                            const message = parser.parseFromString(text, "text/xml").getElementsByTagName("message")[0].childNodes[0]
 
                             document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br> Message: ${message.textContent}`;
                         }
