@@ -62,11 +62,11 @@ const server = http.createServer((request, response) => {
     else if (path === '/badRequest') {
         if (query.valid === 'true') {
             if (accept.includes('text/xml')) {
-                responseXML(response, 200, `<response><message>This request has required parameters</message></response>`);
+                responseXML(response, 200, `<response><message>This request has the required parameters</message></response>`);
             }
 
             else {
-                responseJSON(response, 200, { message: "This request has required parameters" });
+                responseJSON(response, 200, { message: "This request has the required parameters" });
             }
             return;
         }
@@ -131,11 +131,11 @@ const server = http.createServer((request, response) => {
 
     else if (path === '/notImplemented') {
         if (accept.includes('text/xml')) {
-            responseXML(response, 501, `<response><message>A get request for this page has not been implemented yet. Check again later for updated content.</message><id>notImplimented</id></response>`);
+            responseXML(response, 501, `<response><message>A get request for this page has not been implemented yet. Check again later for updated content.</message><id>notImplemented</id></response>`);
         }
 
         else {
-            responseJSON(response, 501, { message: "A get request for this page has not been implemented yet. Check again later for updated content.", id: "notImplimented" })
+            responseJSON(response, 501, { message: "A get request for this page has not been implemented yet. Check again later for updated content.", id: "notImplemented" })
         }
         return;
     }
