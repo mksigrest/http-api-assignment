@@ -60,25 +60,51 @@ const server = http.createServer((request, response) => {
     }
 
     else if (path === '/badRequest') {
-        if (accept.includes('text/xml')) {
-            responseXML(response, 400, `<response><message>Missing valid query parameter set to true.</message><id>badRequest</id></response>`);
+        if (query.valid === 'true') {
+            if (accept.includes('text/xml')) {
+                responseXML(response, 200, `<response><message>This request has required parameters</message></response>`);
+            }
+
+            else {
+                responseJSON(response, 200, { message: "This request has required parameters" });
+            }
+            return;
         }
 
         else {
-            responseJSON(response, 400, { message: "Missing valid query parameter set to true.", id: "badRequest" });
+            if (accept.includes('text/xml')) {
+                responseXML(response, 400, `<response><message>Missing valid query parameter set to true.</message><id>badRequest</id></response>`);
+            }
+
+            else {
+                responseJSON(response, 400, { message: "Missing valid query parameter set to true.", id: "badRequest" });
+            }
+            return;
         }
-        return;
     }
 
     else if (path === '/unauthorized') {
-        if (accept.includes('text/xml')) {
-            responseXML(response, 401, `<response><message>Missing loggedIn query parameter set to yes.</message><id>unauthorized</id></response>`);
+        if (query.loggedIn === 'yes') {
+            if (accept.includes('text/xml')) {
+                responseXML(response, 200, `<response><message>You have successfully viewed content.</message><id>unauthorized</id></response>`);
+            }
+
+            else {
+                responseJSON(response, 200, { message: "You have successfully viewed content.", id: "unauthorized" })
+            }
+            return;
         }
 
         else {
-            responseJSON(response, 401, { message: "Missing loggedIn query parameter set to yes.", id: "unauthorized" })
+            if (accept.includes('text/xml')) {
+                responseXML(response, 401, `<response><message>Missing loggedIn query parameter set to yes.</message><id>unauthorized</id></response>`);
+            }
+
+            else {
+                responseJSON(response, 401, { message: "Missing loggedIn query parameter set to yes.", id: "unauthorized" })
+            }
+            return;
         }
-        return;
     }
 
     else if (path === '/forbidden') {

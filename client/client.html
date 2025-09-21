@@ -47,14 +47,14 @@
                         if (contentType && contentType.includes('application/json')) {
                             const data = JSON.parse(text);
 
-                            document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br> Message: ${data.message}`;
+                            document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br><br> Message: ${data.message}`;
                         }
 
                         else if (contentType && contentType.includes('xml')) {
                             const parser = new DOMParser();
                             const message = parser.parseFromString(text, "text/xml").getElementsByTagName("message")[0].childNodes[0]
 
-                            document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br> Message: ${message.textContent}`;
+                            document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br><br> Message: ${message.textContent}`;
                         }
                     });
                 })
