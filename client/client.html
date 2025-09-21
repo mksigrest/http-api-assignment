@@ -5,7 +5,39 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
+      const sendButton = document.getElementById('send');
+      sendButton.addEventListener('click', () => {
+          const page = document.getElementById('page').value;
+          const type = document.getElementById('type').value;
 
+          fetch(page, {
+              headers: {
+                  'Accept': type }
+          })
+          .then((response) => {
+              return response.text().then((text) => {
+                  console.log(text);
+                  const contentType = response.headers.get('content-type');
+
+                  if (contentType && contentType.includes('application/json')) {
+                      const data = JSON.parse(text);
+                      document.getElementById('content').innerText = data.message;
+                  }
+
+                  else if (contentType && contentType.includes('xml')) {
+                      const parser = new DOMParser();
+                      const xmlDoc = parser.parseFromString(text, "text/xml");
+                      const message = xmlDoc.getElementsByTagName("message")[0].childNodes[0]
+                      const idElement = xmlDoc.getElementsByTagName("id")[0];
+                      document.getElementById('content').innerHTML = message(idElement ? `<br><small>ID: ${idElement.childNodes[0].nodeValue}</small>`)
+                  }
+              });
+          })
+
+          .catch((error) => {
+              console.error(error);
+          })
+      })
   </script>
 </head>
 <body>
