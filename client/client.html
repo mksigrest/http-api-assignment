@@ -27,10 +27,13 @@
     <script>
         const sendButton = document.getElementById('send');
         sendButton.addEventListener('click', () => {
-            const page = document.getElementById('page').value;
+            const page = document.getElementById('page');
+            const pageValue = page.value;
+            const pageText = page.options[page.selectedIndex].text;
+
             const type = document.getElementById('type').value;
 
-            fetch(page, {
+            fetch(pageValue, {
                 headers: {
                     'Accept': type
                 }
@@ -42,16 +45,16 @@
 
                         if (contentType && contentType.includes('application/json')) {
                             const data = JSON.parse(text);
-                            document.getElementById('content').innerText = data.message;
+
+                            document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br> Message: ${data.message}`;
                         }
 
                         else if (contentType && contentType.includes('xml')) {
                             const parser = new DOMParser();
                             const xmlDoc = parser.parseFromString(text, "text/xml");
                             const message = xmlDoc.getElementsByTagName("message")[0].childNodes[0]
-                            const idElement = xmlDoc.getElementsByTagName("id")[0];
-                            const idText = idElem ? `<br><small>ID: ${idElement.childNodes[0].nodeValue}</small>` : '';
-                            document.getElementById('content').innerHTML = message + idText;
+
+                            document.getElementById('content').innerHTML = `<strong>${pageText}</strong> <br> Message: ${message.textContent}`;
                         }
                     });
                 })
